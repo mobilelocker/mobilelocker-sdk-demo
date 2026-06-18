@@ -1,0 +1,209 @@
+@use 'sass:color';
+
+/* ── Tokens ── */
+:root {
+  --v-theme-primary: 9, 170, 234;
+  --v-theme-on-primary: 255, 255, 255;
+  --v-theme-background: 255, 255, 255;
+  --v-theme-surface: 255, 255, 255;
+}
+
+$brand-primary: #09aaea;
+$brand-light: hsl(220, 14%, 96%);
+$brand-white: #ffffff;
+$text-primary: hsl(222, 47%, 11%);
+$text-secondary: hsl(215, 16%, 47%);
+$border: hsl(220, 13%, 91%);
+
+/* ── Base ── */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: $brand-light;
+  color: $text-primary;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input, textarea, [contenteditable] {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+html {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Vuetify overrides ── */
+.v-main {
+  background-color: transparent !important;
+}
+
+.v-application {
+  background-color: $brand-light !important;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.v-container {
+  padding: 24px 16px !important;
+}
+
+.v-container:not(.v-container--fluid) {
+  max-width: 900px !important;
+}
+
+.v-card {
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid $border !important;
+}
+
+.v-card:not([color]) {
+  background-color: $brand-white !important;
+}
+
+/* Fields: tighter radius matching shadcn rounded-md */
+.v-text-field, .v-select, .v-autocomplete, .v-textarea {
+  .v-field {
+    border-radius: 6px !important;
+
+    .v-field__input {
+      font-size: 0.875rem !important;
+      font-family: inherit !important;
+    }
+
+    /* suppress empty label notch */
+    .v-label.v-field-label {
+      display: none !important;
+    }
+  }
+}
+
+/* v-select placeholder/selection vertical alignment */
+.v-select .v-field__input {
+  align-items: center !important;
+
+  input {
+    align-self: center !important;
+  }
+}
+
+.v-btn {
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  font-family: inherit !important;
+}
+
+/* ── External field label pattern ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field__label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: $text-primary;
+  line-height: 1;
+  letter-spacing: -0.005em;
+}
+
+.field__req {
+  color: hsl(0, 72%, 51%);
+  font-size: 0.75rem;
+}
+
+/* ── Shared form styles ── */
+.iva-form__header {
+  margin-bottom: 18px;
+}
+
+.iva-form__title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: $text-primary;
+  margin: 0 0 5px;
+}
+
+.iva-form__subtitle {
+  font-size: 0.8125rem;
+  color: $text-secondary;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.iva-form__divider {
+  height: 1px;
+  background: $border;
+  margin-bottom: 22px;
+}
+
+.iva-form__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.iva-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.iva-form__row--thirds {
+  grid-template-columns: 1fr 100px 100px;
+}
+
+.iva-form__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid $border;
+}
+
+.iva-form__submit {
+  min-width: 140px;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* ── Mobile ── */
+@media (max-width: 767px) {
+  .v-container {
+    padding: 16px 12px !important;
+  }
+
+  .v-container:not(.v-container--fluid) {
+    max-width: 100% !important;
+  }
+
+  .v-btn {
+    min-height: 44px !important;
+  }
+
+  .iva-form__row,
+  .iva-form__row--thirds {
+    grid-template-columns: 1fr;
+  }
+}
