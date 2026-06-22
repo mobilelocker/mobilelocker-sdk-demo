@@ -702,6 +702,10 @@ export default {
       this.scan.result = null
       try {
         this.scan.result = await this.$ml.scanner.scanBadge(this.selectedEvent.id)
+        this.$ml.analytics.logEvent('scanner', 'scan_badge', '/events', {
+          event_id: this.selectedEvent?.id,
+          status: this.scan.result?.status,
+        })
       } catch {
         this.scan.result = {status: 'failed'}
       } finally {

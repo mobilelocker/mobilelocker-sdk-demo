@@ -44,6 +44,11 @@ const routes = [
         component: Home,
     },
     {
+        path: '/presentation',
+        name: 'presentation',
+        component: Home,
+    },
+    {
         path: '/:pathMatch(.*)*',
         redirect: '/mljs',
     },

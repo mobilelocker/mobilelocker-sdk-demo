@@ -1207,6 +1207,9 @@ export default {
           'Your IVA/SDK Demo is Ready',
           'This email would contain the presentation with a link to view.'
         )
+        this.$ml.analytics.logEvent('share', 'email', '/kazaamax', {
+          recipient: email,
+        })
         this.shareSentTo = { name, email }
         this.shareRecipientName = ''
         this.shareEmail = ''

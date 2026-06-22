@@ -348,6 +348,9 @@ export default {
       this.bizcard.result = null
       try {
         this.bizcard.result = await this.$ml.scanner.scanBusinessCard()
+        this.$ml.analytics.logEvent('scanner', 'scan_bizcard', '/scanner', {
+          status: this.bizcard.result?.status,
+        })
       } catch {
         this.bizcard.result = {status: 'failed'}
       } finally {

@@ -119,6 +119,7 @@ import Environments from '@/pages/components/Environments.vue'
 import Scanner from '@/pages/components/Scanner.vue'
 import Search from '@/pages/components/Search.vue'
 import Events from '@/pages/components/Events.vue'
+import Presentation from '@/pages/components/Presentation.vue'
 
 const ROUTE_COMPONENTS = {
   mirf: MirfForm,
@@ -127,6 +128,7 @@ const ROUTE_COMPONENTS = {
   events: Events,
   kazaamax: Kazaamax,
   mljs: Environments,
+  presentation: Presentation,
 }
 
 export default {
@@ -138,7 +140,8 @@ export default {
     FontAwesomeIcon,
     MirfForm,
     Kazaamax,
-    Environments
+    Environments,
+    Presentation,
   },
   data() {
     return {
@@ -180,6 +183,12 @@ export default {
           desc: 'KZM Clinical',
           icon: 'wand-magic-sparkles'
         },
+        {
+          route: 'presentation',
+          label: 'Presentations',
+          desc: 'Browse & share',
+          icon: 'chart-line'
+        },
       ],
     }
   },
@@ -203,9 +212,13 @@ export default {
       }
     },
   },
+  mounted() {
+    this.$ml.analytics.logEvent('page', 'view', '/' + this.$route.name)
+  },
   watch: {
     '$route.name'(name) {
       if (name !== 'kazaamax') this.presenting = false
+      this.$ml.analytics.logEvent('page', 'view', '/' + name)
     },
   },
 }

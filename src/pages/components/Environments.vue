@@ -135,6 +135,23 @@
           device.getInfo() — iOS app only
         </span>
         </div>
+        <div class="env-section-label env-section-label--spaced">
+          UI utilities
+        </div>
+        <div class="env-ui-row">
+          <v-btn variant="outlined"
+                 density="compact"
+                 size="small"
+                 @click="showToolbar">
+            <FontAwesomeIcon icon="bars" style="margin-right: 6px; font-size: 0.75rem;"/>
+            Show Toolbar
+          </v-btn>
+          <code class="env-device-key">ui.showToolbar()</code>
+          <span v-if="uiToolbarCalled"
+                style="display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:600;color:hsl(145,50%,36%);">
+            <FontAwesomeIcon icon="circle-check"/> called
+          </span>
+        </div>
       </div>
       <div v-if="activeTab === 'http'"
            class="env-tab-panel">
@@ -374,6 +391,7 @@ export default {
         bluetooth: null,
         biometric: null,
       },
+      uiToolbarCalled: false,
     }
   },
   async created() {
@@ -580,6 +598,11 @@ export default {
         'badge--denied': status === 'denied' || status === 'unavailable',
         'badge--false': status === 'not_determined' || status === 'restricted',
       }
+    },
+    showToolbar() {
+      this.$ml.ui.showToolbar()
+      this.uiToolbarCalled = true
+      setTimeout(() => { this.uiToolbarCalled = false }, 2500)
     },
   },
 }
@@ -1059,6 +1082,15 @@ export default {
   margin-top: 12px;
   display: flex;
   justify-content: flex-end;
+}
+
+/* ── UI utilities ── */
+.env-ui-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 2px;
 }
 
 @media (max-width: 640px) {

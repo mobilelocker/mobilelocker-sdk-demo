@@ -217,6 +217,11 @@ export default {
         this.results = Object.entries(response).flatMap(([type, group]) =>
             (group.results || []).map(item => ({...item, _type: type}))
         ).slice(0, this.limit)
+        this.$ml.analytics.logEvent('search', 'query', '/search', {
+          term: this.lastQuery,
+          result_count: this.totalCount,
+          types: this.selectedTypes.length ? this.selectedTypes : 'all',
+        })
       } catch {
         this.results = []
         this.totalCount = 0

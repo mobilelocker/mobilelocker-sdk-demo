@@ -180,6 +180,10 @@ export default {
       this.loading = true
       try {
         this.$ml.data.submitForm('mirf', this.form)
+        this.$ml.analytics.logEvent('form', 'submit', '/mirf', {
+          specialty: this.form.specialty,
+          product: this.form.product,
+        })
         this.submitted = true
       } catch (error) {
         // submission failure handled silently
