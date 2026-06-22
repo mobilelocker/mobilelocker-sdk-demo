@@ -68,7 +68,52 @@
           </div>
         </div>
       </div>
-      <template v-if="results !== null">
+      <!-- ── Initial empty state (no search yet) ── -->
+    <template v-if="results === null">
+      <div class="se-home">
+        <div class="se-hero">
+          <div class="se-hero__glyph">
+            <FontAwesomeIcon icon="magnifying-glass"/>
+          </div>
+          <p class="se-hero__title">Search MobileLocker</p>
+          <p class="se-hero__sub">Find customers, presentations, contacts, attendees, and scanned business cards across your territory.</p>
+        </div>
+
+        <div class="se-section">
+          <span class="se-section__label">What you can search</span>
+          <div class="se-type-grid">
+            <button v-for="t in types"
+                    :key="t.value"
+                    class="se-type-card"
+                    @click="filterTo(t.value)">
+              <div class="se-type-card__icon" :style="{ background: t.color + '1a', color: t.color }">
+                <FontAwesomeIcon :icon="t.icon"/>
+              </div>
+              <div class="se-type-card__body">
+                <span class="se-type-card__name">{{ t.name }}</span>
+                <span class="se-type-card__desc">{{ t.desc }}</span>
+              </div>
+              <FontAwesomeIcon icon="arrow-right" class="se-type-card__arrow"/>
+            </button>
+          </div>
+        </div>
+
+        <div class="se-section">
+          <span class="se-section__label">Try searching for</span>
+          <div class="se-chips">
+            <button v-for="s in suggestions"
+                    :key="s"
+                    class="se-chip"
+                    @click="suggest(s)">
+              <FontAwesomeIcon icon="magnifying-glass" class="se-chip__icon"/>
+              {{ s }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template v-if="results !== null">
         <div class="iva-form__divider"/>
         <div class="results-header">
           <span class="results-header__count">
@@ -79,16 +124,41 @@
             Clear
           </button>
         </div>
-        <div v-if="results.length === 0"
-             class="search-empty">
-          <FontAwesomeIcon icon="circle-xmark"
-                           class="search-empty__icon"/>
-          <p class="search-empty__title">
-            Nothing found
-          </p>
-          <p class="search-empty__text">
-            No results matched "{{ lastQuery }}"
-          </p>
+        <div v-if="results.length === 0" class="se-nores">
+          <div class="se-nores__glyph">
+            <FontAwesomeIcon icon="magnifying-glass" class="se-nores__mag"/>
+            <div class="se-nores__x">
+              <FontAwesomeIcon icon="xmark"/>
+            </div>
+          </div>
+          <div class="se-nores__heading">
+            <p class="se-nores__label">No results for</p>
+            <div class="se-nores__query">"{{ lastQuery }}"</div>
+          </div>
+          <div class="se-nores__tips">
+            <div class="se-nores__tip">
+              <FontAwesomeIcon icon="lightbulb" class="se-nores__tip-icon"/>
+              <span>Try fewer words or a partial name</span>
+            </div>
+            <div class="se-nores__tip" v-if="selectedTypes.length">
+              <FontAwesomeIcon icon="filter" class="se-nores__tip-icon"/>
+              <span>Remove filters to search all types</span>
+            </div>
+            <div class="se-nores__tip">
+              <FontAwesomeIcon icon="rotate-left" class="se-nores__tip-icon"/>
+              <span>Check for typos or try an alternate spelling</span>
+            </div>
+          </div>
+          <div class="se-nores__actions">
+            <button v-if="selectedTypes.length"
+                    class="se-nores__btn"
+                    @click="selectedTypes = []">
+              <FontAwesomeIcon icon="filter"/> Clear filters
+            </button>
+            <button class="se-nores__btn se-nores__btn--ghost" @click="clearResults">
+              New search
+            </button>
+          </div>
         </div>
         <div v-else>
           <div class="result-list">
@@ -165,27 +235,13 @@ export default {
   data() {
     return {
       types: [
-        {
-          name: 'Customers',
-          value: 'customers',
-        },
-        {
-          name: 'Presentations',
-          value: 'presentations',
-        },
-        {
-          name: 'Contacts',
-          value: 'contacts',
-        },
-        {
-          name: 'Attendees',
-          value: 'attendees',
-        },
-        {
-          name: 'Business Cards',
-          value: 'business_cards',
-        }
+        {name: 'Customers',       value: 'customers',      icon: 'building',      color: '#0057B8', desc: 'Companies & accounts'},
+        {name: 'Presentations',   value: 'presentations',  icon: 'chart-line',    color: '#7B3FE4', desc: 'Slides & clinical materials'},
+        {name: 'Contacts',        value: 'contacts',       icon: 'address-book',  color: '#0891B2', desc: 'HCPs & physicians'},
+        {name: 'Attendees',       value: 'attendees',      icon: 'users',         color: '#059669', desc: 'Congress & event participants'},
+        {name: 'Business Cards',  value: 'business_cards', icon: 'id-card',       color: '#D97706', desc: 'Scanned meeting contacts'},
       ],
+      suggestions: ['Novartis', 'oncology', 'Dr. Anderson', 'CLARITY-1', 'cardiology'],
       limitOptions: [10, 25, 50, 100],
       searchQuery: '',
       lastQuery: '',
@@ -251,6 +307,16 @@ export default {
     formatJson(result) {
       const {_type, ...rest} = result
       return JSON.stringify(rest, null, 2)
+    },
+
+    suggest(term) {
+      this.searchQuery = term
+      this.$nextTick(() => document.querySelector('.search-bar__input')?.focus())
+    },
+
+    filterTo(typeValue) {
+      this.selectedTypes = [typeValue]
+      this.$nextTick(() => document.querySelector('.search-bar__input')?.focus())
     },
   },
 }
@@ -573,30 +639,296 @@ export default {
   overflow-y: auto;
 }
 
-.search-empty {
+/* ── Initial empty / home state ── */
+.se-home {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-top: 8px;
+}
+
+.se-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 48px 24px;
+  text-align: center;
+  padding: 28px 16px 24px;
 }
 
-.search-empty__icon {
-  font-size: 2rem;
-  color: hsl(220, 9%, 82%);
+.se-hero__glyph {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgb(var(--v-theme-primary)), hsl(210, 90%, 42%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.375rem;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 20px rgba(9, 118, 210, 0.28);
 }
 
-.search-empty__title {
+.se-hero__title {
+  margin: 0 0 8px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: hsl(220, 9%, 14%);
+  letter-spacing: -0.02em;
+}
+
+.se-hero__sub {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: hsl(220, 9%, 52%);
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+.se-section {
+  margin-top: 22px;
+}
+
+.se-section__label {
+  display: block;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.32);
+  margin-bottom: 10px;
+}
+
+.se-type-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.se-type-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 13px;
+  border: 1px solid hsl(220, 13%, 91%);
+  border-radius: 9px;
+  background: white;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+
+.se-type-card:hover {
+  background: hsl(220, 14%, 98%);
+  border-color: hsl(220, 13%, 82%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.se-type-card__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.se-type-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.se-type-card__name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: hsl(220, 9%, 16%);
+}
+
+.se-type-card__desc {
+  font-size: 0.6875rem;
+  color: hsl(220, 9%, 58%);
+}
+
+.se-type-card__arrow {
+  font-size: 0.625rem;
+  color: hsl(220, 9%, 72%);
+  flex-shrink: 0;
+  transition: color 0.12s, transform 0.12s;
+}
+
+.se-type-card:hover .se-type-card__arrow {
+  color: hsl(220, 9%, 45%);
+  transform: translateX(2px);
+}
+
+.se-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.se-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid hsl(220, 13%, 88%);
+  border-radius: 99px;
+  background: hsl(220, 14%, 97%);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: hsl(220, 9%, 34%);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.se-chip:hover {
+  background: white;
+  border-color: rgb(var(--v-theme-primary));
+  color: rgb(var(--v-theme-primary));
+}
+
+.se-chip__icon {
+  font-size: 0.625rem;
+  opacity: 0.5;
+}
+
+.se-chip:hover .se-chip__icon {
+  opacity: 1;
+}
+
+/* ── No results state ── */
+.se-nores {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 0 28px;
+  gap: 20px;
+  text-align: center;
+}
+
+.se-nores__glyph {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.se-nores__mag {
+  font-size: 2.25rem;
+  color: hsl(220, 13%, 82%);
+}
+
+.se-nores__x {
+  position: absolute;
+  bottom: -2px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: hsl(0, 70%, 92%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  color: hsl(0, 55%, 52%);
+  border: 2px solid white;
+}
+
+.se-nores__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.se-nores__label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.35);
+  margin: 0;
+}
+
+.se-nores__query {
   font-size: 1rem;
   font-weight: 600;
-  color: hsl(220, 9%, 40%);
+  color: hsl(220, 9%, 22%);
+  letter-spacing: -0.01em;
   margin: 0;
 }
 
-.search-empty__text {
+.se-nores__tips {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+  border: 1px solid hsl(220, 13%, 91%);
+  border-radius: 9px;
+  padding: 12px 14px;
+  background: hsl(220, 14%, 98%);
+}
+
+.se-nores__tip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   font-size: 0.8125rem;
-  color: hsl(220, 9%, 65%);
-  margin: 0;
+  color: hsl(220, 9%, 48%);
+  text-align: left;
+}
+
+.se-nores__tip-icon {
+  font-size: 0.75rem;
+  color: hsl(220, 9%, 68%);
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+}
+
+.se-nores__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.se-nores__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  border: 1px solid hsl(220, 13%, 86%);
+  background: white;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: hsl(220, 9%, 22%);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.se-nores__btn:hover {
+  background: hsl(220, 14%, 95%);
+  border-color: hsl(220, 13%, 74%);
+}
+
+.se-nores__btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: hsl(220, 9%, 55%);
+}
+
+.se-nores__btn--ghost:hover {
+  background: hsl(220, 14%, 95%);
+  border-color: transparent;
+  color: hsl(220, 9%, 30%);
 }
 
 .pagination {

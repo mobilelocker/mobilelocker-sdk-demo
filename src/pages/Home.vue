@@ -38,9 +38,7 @@
           </v-list-item>
         </v-list>
       </v-sheet>
-      <v-card-text :style="presenting
-        ? 'flex: 1; min-width: 0; min-height: 0; padding: 0; overflow: hidden; display: flex; flex-direction: column;'
-        : 'flex: 1; min-width: 0; padding: 36px 40px; overflow-y: auto;'">
+      <v-card-text :style="desktopCardStyle">
         <component :is="activeComponent"
                    v-bind="activeComponentProps"/>
       </v-card-text>
@@ -88,9 +86,7 @@
         </div>
       </div>
       <v-divider v-if="!presenting"/>
-      <v-card-text :style="presenting
-        ? 'flex: 1; min-height: 0; padding: 0; overflow: hidden; display: flex; flex-direction: column;'
-        : 'flex: 1; padding: 20px 16px; overflow-y: auto;'">
+      <v-card-text :style="mobileCardStyle">
         <component :is="activeComponent"
                    v-bind="activeComponentProps"/>
       </v-card-text>
@@ -120,6 +116,7 @@ import Scanner from '@/pages/components/Scanner.vue'
 import Search from '@/pages/components/Search.vue'
 import Events from '@/pages/components/Events.vue'
 import Presentation from '@/pages/components/Presentation.vue'
+import Crm from '@/pages/components/Crm.vue'
 
 const ROUTE_COMPONENTS = {
   mirf: MirfForm,
@@ -129,6 +126,7 @@ const ROUTE_COMPONENTS = {
   kazaamax: Kazaamax,
   mljs: Environments,
   presentation: Presentation,
+  crm: Crm,
 }
 
 export default {
@@ -142,6 +140,7 @@ export default {
     Kazaamax,
     Environments,
     Presentation,
+    Crm,
   },
   data() {
     return {
@@ -189,12 +188,39 @@ export default {
           desc: 'Browse & share',
           icon: 'chart-line'
         },
+        {
+          route: 'crm',
+          label: 'CRM',
+          desc: 'Accounts & contacts',
+          icon: 'building'
+        },
       ],
     }
   },
   computed: {
     isMobile() {
       return this.$vuetify.display.smAndDown
+    },
+    isKazaamax() {
+      return this.$route.name === 'kazaamax'
+    },
+    desktopCardStyle() {
+      if (this.presenting) {
+        return 'flex: 1; min-width: 0; min-height: 0; padding: 0; overflow: hidden; display: flex; flex-direction: column;'
+      }
+      if (this.isKazaamax) {
+        return 'flex: 1; min-width: 0; min-height: 0; padding: 36px 40px; overflow: hidden; display: flex; flex-direction: column;'
+      }
+      return 'flex: 1; min-width: 0; padding: 36px 40px; overflow-y: auto;'
+    },
+    mobileCardStyle() {
+      if (this.presenting) {
+        return 'flex: 1; min-height: 0; padding: 0; overflow: hidden; display: flex; flex-direction: column;'
+      }
+      if (this.isKazaamax) {
+        return 'flex: 1; min-height: 0; padding: 20px 16px; overflow: hidden; display: flex; flex-direction: column;'
+      }
+      return 'flex: 1; padding: 20px 16px; overflow-y: auto;'
     },
     activeComponent() {
       return ROUTE_COMPONENTS[this.$route.name] ?? null

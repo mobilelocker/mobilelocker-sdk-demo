@@ -139,13 +139,10 @@
           UI utilities
         </div>
         <div class="env-ui-row">
-          <v-btn variant="outlined"
-                 density="compact"
-                 size="small"
-                 @click="showToolbar">
-            <FontAwesomeIcon icon="bars" style="margin-right: 6px; font-size: 0.75rem;"/>
+          <button class="env-action-btn" @click="showToolbar">
+            <FontAwesomeIcon icon="bars"/>
             Show Toolbar
-          </v-btn>
+          </button>
           <code class="env-device-key">ui.showToolbar()</code>
           <span v-if="uiToolbarCalled"
                 style="display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:600;color:hsl(145,50%,36%);">
@@ -349,18 +346,9 @@ export default {
     return {
       activeTab: 'runtime',
       tabs: [
-        {
-          key: 'runtime',
-          label: 'Runtime',
-        },
-        {
-          key: 'http',
-          label: 'HTTP',
-        },
-        {
-          key: 'storage',
-          label: 'Storage',
-        },
+        {key: 'runtime', label: 'Runtime'},
+        {key: 'http',    label: 'HTTP'},
+        {key: 'storage', label: 'Storage'},
       ],
       network: null,
       deviceInfo: null,
@@ -433,26 +421,11 @@ export default {
 
     flagList() {
       return [
-        {
-          key: 'isMobileLocker',
-          value: this.flags.isMobileLocker,
-        },
-        {
-          key: 'isApp',
-          value: this.flags.isApp,
-        },
-        {
-          key: 'isIOS',
-          value: this.flags.isIOS,
-        },
-        {
-          key: 'isElectron',
-          value: this.flags.isElectron,
-        },
-        {
-          key: 'isCDN',
-          value: this.flags.isCDN,
-        },
+        {key: 'isMobileLocker', value: this.flags.isMobileLocker},
+        {key: 'isApp',          value: this.flags.isApp},
+        {key: 'isIOS',          value: this.flags.isIOS},
+        {key: 'isElectron',     value: this.flags.isElectron},
+        {key: 'isCDN',          value: this.flags.isCDN},
       ]
     },
 
@@ -893,6 +866,37 @@ export default {
   font-size: 0.8125rem;
 }
 
+/* ── UI utilities ── */
+.env-ui-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.env-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 7px;
+  border: 1px solid hsl(220, 13%, 86%);
+  background: white;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: hsl(220, 9%, 22%);
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  transition: background 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+
+.env-action-btn:hover {
+  background: hsl(220, 14%, 95%);
+  border-color: hsl(220, 13%, 74%);
+}
+
 /* ── HTTP tab ── */
 .field {
   margin-bottom: 16px;
@@ -1082,15 +1086,6 @@ export default {
   margin-top: 12px;
   display: flex;
   justify-content: flex-end;
-}
-
-/* ── UI utilities ── */
-.env-ui-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 2px;
 }
 
 @media (max-width: 640px) {
