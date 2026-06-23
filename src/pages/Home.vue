@@ -239,12 +239,12 @@ export default {
     },
   },
   mounted() {
-    this.$ml.analytics.logEvent('page', 'view', '/' + this.$route.name)
+    this.$ml.analytics.logEvent('action', 'tap', '/' + this.$route.name)
   },
   watch: {
     '$route.name'(name) {
       if (name !== 'kazaamax') this.presenting = false
-      this.$ml.analytics.logEvent('page', 'view', '/' + name)
+      this.$ml.analytics.logEvent('action', 'tap', '/' + name)
     },
   },
 }

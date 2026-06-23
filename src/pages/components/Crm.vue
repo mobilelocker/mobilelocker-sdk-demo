@@ -35,7 +35,7 @@
           <FontAwesomeIcon :icon="listLoading ? 'arrows-rotate' : 'list'" :class="{spin: listLoading}"/>
           List
         </button>
-        <code class="crm-footnote">crm.{{ currentEntity.listMethod }}()</code>
+        <code class="crm-footnote">mobilelocker.crm.{{ currentEntity.listMethod }}()</code>
       </div>
       <div class="crm-row" style="margin-top: 8px;">
         <input v-model="entityId"
@@ -46,7 +46,7 @@
           <FontAwesomeIcon :icon="getLoading ? 'arrows-rotate' : 'arrow-right'" :class="{spin: getLoading}"/>
           Get
         </button>
-        <code class="crm-footnote">crm.{{ currentEntity.getMethod }}(id)</code>
+        <code class="crm-footnote">mobilelocker.crm.{{ currentEntity.getMethod }}(id)</code>
       </div>
 
       <template v-if="listResult !== null">
@@ -88,11 +88,11 @@
         <button class="crm-btn" :disabled="currentLoading" @click="getCurrent">
           Get Current
         </button>
-        <code class="crm-footnote">crm.getCurrentCustomers()</code>
+        <code class="crm-footnote">mobilelocker.crm.getCurrentCustomers()</code>
         <button class="crm-btn" :disabled="recentLoading" @click="getRecent" style="margin-left: 4px;">
           Get Recent
         </button>
-        <code class="crm-footnote">crm.getRecentCustomers()</code>
+        <code class="crm-footnote">mobilelocker.crm.getRecentCustomers()</code>
       </div>
 
       <div v-if="customers !== null" style="margin-top: 10px;">
@@ -116,7 +116,7 @@
                 @click="clearCurrent">
           Clear all
         </button>
-        <code class="crm-footnote" style="display:block;margin-top:5px;">crm.clearCurrentCustomers()</code>
+        <code class="crm-footnote" style="display:block;margin-top:5px;">mobilelocker.crm.clearCurrentCustomers()</code>
       </div>
 
       <div class="crm-section-label" style="margin-top: 20px;">Add / check</div>
@@ -127,11 +127,11 @@
         <button class="crm-btn" :disabled="!customerId" @click="addCurrent">
           <FontAwesomeIcon icon="plus"/> Add
         </button>
-        <code class="crm-footnote">crm.addCurrentCustomer(id)</code>
+        <code class="crm-footnote">mobilelocker.crm.addCurrentCustomer(id)</code>
         <button class="crm-btn" :disabled="!customerId" @click="checkIsCurrent" style="margin-left: 4px;">
           Is current?
         </button>
-        <code class="crm-footnote">crm.isCurrentCustomer(id)</code>
+        <code class="crm-footnote">mobilelocker.crm.isCurrentCustomer(id)</code>
         <span v-if="isCurrentResult !== null"
               class="crm-badge"
               :class="isCurrentResult ? 'crm-badge--true' : 'crm-badge--false'">
@@ -144,7 +144,7 @@
         <button class="crm-btn" @click="openPicker">
           <FontAwesomeIcon icon="hand-pointer"/> Open Picker
         </button>
-        <code class="crm-footnote">crm.openCustomerPicker()</code>
+        <code class="crm-footnote">mobilelocker.crm.openCustomerPicker()</code>
         <span v-if="pickerStatus" class="crm-status">{{ pickerStatus }}</span>
       </div>
       <div class="crm-row" style="margin-top: 8px;">
@@ -152,7 +152,7 @@
           <FontAwesomeIcon icon="arrows-rotate" :class="{spin: refreshLoading}"/>
           Refresh
         </button>
-        <code class="crm-footnote">crm.refresh()</code>
+        <code class="crm-footnote">mobilelocker.crm.refresh()</code>
         <span v-if="refreshStatus" class="crm-status">{{ refreshStatus }}</span>
       </div>
     </div>
@@ -171,7 +171,7 @@
           <FontAwesomeIcon :icon="queryLoading ? 'arrows-rotate' : 'play'" :class="{spin: queryLoading}"/>
           Execute
         </button>
-        <code class="crm-footnote">crm.query(soql)</code>
+        <code class="crm-footnote">mobilelocker.crm.query(soql)</code>
       </div>
       <template v-if="queryResult !== null">
         <div class="crm-result-hdr" style="margin-top: 14px;">

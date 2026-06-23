@@ -57,7 +57,7 @@
                 <FontAwesomeIcon :icon="flag.value ? 'circle-check' : 'circle'"
                                  class="env-flag__icon"/>
                 <code class="env-flag__name">
-                  {{ flag.key }}()
+                  mobilelocker.{{ flag.key }}()
                 </code>
                 <span class="env-flag__badge"
                       :class="flag.value ? 'badge--true' : 'badge--false'">
@@ -77,7 +77,7 @@
                                  class="env-flag__icon"/>
                 <div class="env-flag__info">
                   <code class="env-flag__name">
-                    network.getStatus()
+                    mobilelocker.network.getStatus()
                   </code>
                   <span class="env-flag__desc">
                   {{ network ? (network.connected ? `Connected · ${network.type}` : 'No connection') : 'Loading…' }}
@@ -97,7 +97,7 @@
                                  class="env-flag__icon"/>
                 <div class="env-flag__info">
                   <code class="env-flag__name">
-                    {{ perm.label }}
+                    mobilelocker.permissions.{{ perm.key }}()
                   </code>
                   <span class="env-flag__desc">
                   {{ perm.status }}
@@ -132,7 +132,7 @@
           <FontAwesomeIcon icon="laptop-mobile"
                            class="env-device-empty__icon"/>
           <span>
-          device.getInfo() — iOS app only
+          mobilelocker.device.get() — iOS app only
         </span>
         </div>
         <div class="env-section-label env-section-label--spaced">
@@ -143,7 +143,7 @@
             <FontAwesomeIcon icon="bars"/>
             Show Toolbar
           </button>
-          <code class="env-device-key">ui.showToolbar()</code>
+          <code class="env-device-key">mobilelocker.ui.showToolbar()</code>
           <span v-if="uiToolbarCalled"
                 style="display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:600;color:hsl(145,50%,36%);">
             <FontAwesomeIcon icon="circle-check"/> called

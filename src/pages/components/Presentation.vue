@@ -39,7 +39,7 @@
             <FontAwesomeIcon icon="arrows-rotate"/>
             Load presentations
           </button>
-          <span class="lib-sdk-footnote">presentation.getAll()</span>
+          <span class="lib-sdk-footnote">mobilelocker.presentation.getAll()</span>
         </div>
       </div>
 
@@ -178,7 +178,7 @@
                                      :class="{ spin: downloading === selectedPres.id }"/>
                     {{ downloading === selectedPres.id ? 'Downloading…' : 'Download' }}
                   </button>
-                  <span class="lib-sdk-footnote">presentation.download({{ selectedPres.id }})</span>
+                  <span class="lib-sdk-footnote">mobilelocker.presentation.download({{ selectedPres.id }})</span>
                 </div>
 
                 <div class="lib-drawer__action">
@@ -186,13 +186,13 @@
                     <FontAwesomeIcon icon="arrow-up-right-from-square"/>
                     Open
                   </button>
-                  <span class="lib-sdk-footnote">presentation.openByID({{ selectedPres.id }})</span>
+                  <span class="lib-sdk-footnote">mobilelocker.presentation.openByID({{ selectedPres.id }})</span>
                 </div>
               </div>
 
               <!-- UI: media viewer -->
               <div class="env-section-label" style="margin-top: 14px; margin-bottom: 10px;">
-                Media viewer <code class="pres-label-method">ui</code>
+                Media viewer <code class="pres-label-method">mobilelocker.ui</code>
               </div>
               <div class="dlg-ui-grid">
                 <div class="dlg-ui-cell">
@@ -207,7 +207,7 @@
                       <FontAwesomeIcon icon="file-medical"/>
                       Open PDF
                     </button>
-                    <span class="lib-sdk-footnote">ui.openPDF(path, title)</span>
+                    <span class="lib-sdk-footnote">mobilelocker.ui.openPDF(path, title)</span>
                   </div>
                   <span v-if="uiPdfCalled"
                         style="display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:600;color:hsl(145,50%,36%);">
@@ -226,7 +226,7 @@
                       <FontAwesomeIcon icon="forward-step"/>
                       Open Video
                     </button>
-                    <span class="lib-sdk-footnote">ui.openVideo(path)</span>
+                    <span class="lib-sdk-footnote">mobilelocker.ui.openVideo(path)</span>
                   </div>
                   <span v-if="uiVideoResult"
                         :style="{color: uiVideoResult.error ? 'hsl(0,55%,40%)' : 'hsl(145,50%,36%)'}"
@@ -294,13 +294,13 @@
                 <span class="cur-card__val">{{ row.value }}</span>
               </div>
             </div>
-            <span class="lib-sdk-footnote" style="margin-top: 10px; display: block;">presentation.get()</span>
+            <span class="lib-sdk-footnote" style="margin-top: 10px; display: block;">mobilelocker.presentation.get()</span>
           </div>
         </div>
 
         <div v-else class="lib-empty" style="padding: 36px 0;">
           <FontAwesomeIcon icon="circle-xmark" class="lib-empty__icon"/>
-          <p>No active presentation — <code style="font-family: monospace; font-size: 0.75rem;">presentation.get()</code> returned null.</p>
+          <p>No active presentation — <code style="font-family: monospace; font-size: 0.75rem;">mobilelocker.presentation.get()</code> returned null.</p>
         </div>
 
         <!-- Lifecycle actions -->
@@ -313,7 +313,7 @@
                 <FontAwesomeIcon icon="arrows-rotate"/>
                 Reload
               </button>
-              <span class="lib-sdk-footnote">presentation.reload()</span>
+              <span class="lib-sdk-footnote">mobilelocker.presentation.reload()</span>
               <transition name="fade-in">
                 <span v-if="reloadCalled" class="cur-confirm">
                   <FontAwesomeIcon icon="circle-check"/> called
@@ -326,7 +326,7 @@
                 <FontAwesomeIcon icon="xmark"/>
                 Close
               </button>
-              <span class="lib-sdk-footnote">presentation.close()</span>
+              <span class="lib-sdk-footnote">mobilelocker.presentation.close()</span>
               <transition name="fade-in">
                 <span v-if="closeCalled" class="cur-confirm">
                   <FontAwesomeIcon icon="circle-check"/> called
@@ -340,7 +340,7 @@
         <div class="cur-events">
           <div class="env-section-label" style="margin-bottom: 10px;">
             Device events
-            <code class="pres-label-method">presentation.getDeviceEvents()</code>
+            <code class="pres-label-method">mobilelocker.presentation.getDeviceEvents()</code>
           </div>
 
           <div v-if="loadingEvents" class="lib-loading lib-loading--inline">
@@ -368,7 +368,7 @@
       <div class="shr-section">
         <div class="env-section-label" style="margin-bottom: 12px;">
           Notification level
-          <code class="pres-label-method">notificationLevels</code>
+          <code class="pres-label-method">mobilelocker.notificationLevels</code>
         </div>
         <div class="shr-notify-grid">
           <button v-for="level in notifyLevels"
@@ -423,7 +423,7 @@
             {{ shareSent ? 'Shared' : 'Share Presentation' }}
           </button>
           <span class="lib-sdk-footnote">
-            share.presentation(recipients, {{ notifyLevel }})
+            mobilelocker.share.presentation(recipients, {{ notifyLevel }})
           </span>
         </div>
         <transition name="fade-in">

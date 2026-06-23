@@ -278,7 +278,7 @@
                   SDK method
                 </div>
                 <code class="scanner-info-code">
-                  this.$ml.scanner
+                  mobilelocker.scanner
                   <br>
                   .scanBusinessCard()
                 </code>
